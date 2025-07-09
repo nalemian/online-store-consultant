@@ -1,15 +1,19 @@
-Definition of Done (DoD):
+## Development
+Our policies:
+```
+We used the Trunk-based development with short-lived branches attached to a specific issue.
+At least one team member must have provided the useful feedback regarding the MR.
+The QA was performed via pipelining each time the changes in the codebase were introduced.
+```
 
-✔ Code follows project style guidelines.
+### Kanban board
 
-✔ Tests pass (if applicable).
+[Kanban](./docs/CONTRIBUTING/kanban.md)
 
-✔ Code reviewed by at least 1 teammate.
+### **Git workflow**
 
-✔ Code is merged to the main branch.
+[Git workflow](./docs/CONTRIBUTING/gitWorkflow.md)
 
-✔ CI/CD pipelines succeed.
+### Secret management
 
-✔ Changes deployed to a test environment (if applicable).
-
-✔ Acceptance criteria are fulfilled.
+[Secret management](./docs/CONTRIBUTING/secretsManagment.md)
