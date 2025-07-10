@@ -82,7 +82,7 @@ container_scanning:
   needs:
     - build
 
-# Unit testing with Go and coverage report in Cobertura format
+# Unit testing with Go and coverage report in Cobertura formatе
 unit-tests:
   stage: test
   image: golang:1.24.3
