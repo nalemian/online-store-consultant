@@ -235,15 +235,19 @@ func messageHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	resp := make(map[string]string)
 	productID := strings.TrimSpace(clientMsg.ProductID)
 	log.Printf("Message from %s: %s", session.ID, clientMsg.Message)
-	aiResponse, ok := HandleUserQuery(clientMsg.Message, false, session.ID, productID, session.isRegistered)
-	resp := make(map[string]string)
-	if ok == nil {
-		resp["response"] = aiResponse
+	if productID == "" {
+		resp["response"] = "Пожалуйста, выберите продукт прежде чем задавать вопросы"
 	} else {
-		resp["response"] = "Консультант не может помочь с этим вопросом, пожалуйста, обратитесь к технической поддержке через /help"
-		log.Println(ok)
+		aiResponse, ok := HandleUserQuery(clientMsg.Message, false, session.ID, productID, session.isRegistered)
+		if ok == nil {
+			resp["response"] = aiResponse
+		} else {
+			resp["response"] = "Консультант не может помочь с этим вопросом, пожалуйста, обратитесь к технической поддержке через /help"
+			log.Println(ok)
+		}
 	}
 	updateLastActive(session.ID, session.isRegistered)
 	w.Header().Set("Content-Type", "application/json")
