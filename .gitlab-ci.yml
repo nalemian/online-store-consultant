@@ -63,7 +63,7 @@ container_scanning_backend:
     TRIVY_USERNAME: "$HARBOR_USERNAME"
     TRIVY_PASSWORD: "$HARBOR_PASSWORD"
     TRIVY_AUTH_URL: "$HARBOR_HOST"
-    FULL_IMAGE_NAME: $HARBOR_HOST/$HARBOR_PROJECT/backend:latest
+    FULL_IMAGE_NAME: $HARBOR_HOST/$HARBOR_PROJECT/backend:$CI_JOB_ID
   script:
     - trivy --version
     - trivy clean --scan-cache
@@ -93,7 +93,7 @@ container_scanning_bot:
     TRIVY_USERNAME: "$HARBOR_USERNAME"
     TRIVY_PASSWORD: "$HARBOR_PASSWORD"
     TRIVY_AUTH_URL: "$HARBOR_HOST"
-    FULL_IMAGE_NAME: $HARBOR_HOST/$HARBOR_PROJECT/bot:latest
+    FULL_IMAGE_NAME: $HARBOR_HOST/$HARBOR_PROJECT/bot:$CI_JOB_ID
   script:
     - trivy --version
     - trivy clean --scan-cache
