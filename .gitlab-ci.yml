@@ -44,12 +44,12 @@ build:
     - echo "$HARBOR_PASSWORD" | docker login -u "$HARBOR_USERNAME" "$HARBOR_HOST" --password-stdin
   script:
     - docker build -f backend.Dockerfile -t my-backend-image .
-    - docker tag my-backend-image $HARBOR_HOST/$HARBOR_PROJECT/backend:$CI_JOB_ID
-    - docker push $HARBOR_HOST/$HARBOR_PROJECT/backend:$CI_JOB_ID
+    - docker tag my-backend-image $HARBOR_HOST/$HARBOR_PROJECT/backend:latest
+    - docker push $HARBOR_HOST/$HARBOR_PROJECT/backend:latest
 
     - docker build -f bot.Dockerfile -t my-bot-image .
-    - docker tag my-bot-image $HARBOR_HOST/$HARBOR_PROJECT/bot:$CI_JOB_ID
-    - docker push $HARBOR_HOST/$HARBOR_PROJECT/bot:$CI_JOB_ID
+    - docker tag my-bot-image $HARBOR_HOST/$HARBOR_PROJECT/bot:latest
+    - docker push $HARBOR_HOST/$HARBOR_PROJECT/bot:latest
 
 
 # Container vulnerability scanning with Trivy
