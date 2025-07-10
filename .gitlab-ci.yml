@@ -168,13 +168,16 @@ qa_scanning:
     TRIVY_USERNAME: "$HARBOR_USERNAME"
     TRIVY_PASSWORD: "$HARBOR_PASSWORD"
     TRIVY_AUTH_URL: "$HARBOR_HOST"
-    FULL_IMAGE_NAME: $HARBOR_HOST/$HARBOR_PROJECT/$APP:latest
+    FULL_IMAGE_NAME_1: $HARBOR_HOST/$HARBOR_PROJECT/backend:latest
+    FULL_IMAGE_NAME_2: $HARBOR_HOST/$HARBOR_PROJECT/bot:latest
   script:
     - trivy --version
     - trivy clean --scan-cache
     - trivy image --download-db-only --no-progress --cache-dir .trivycache/
-    - trivy image --exit-code 0 --cache-dir .trivycache/ --no-progress --format template --template "@/contrib/gitlab.tpl" --output "$CI_PROJECT_DIR/gl-container-scanning-report.json" "$FULL_IMAGE_NAME"
-    - trivy image --exit-code 1 --cache-dir .trivycache/ --severity CRITICAL --no-progress "$FULL_IMAGE_NAME"
+    - trivy image --exit-code 0 --cache-dir .trivycache/ --no-progress --format template --template "@/contrib/gitlab.tpl" --output "$CI_PROJECT_DIR/gl-container-scanning-report.json" "$FULL_IMAGE_NAME_1"
+    - trivy image --exit-code 1 --cache-dir .trivycache/ --severity CRITICAL --no-progress "$FULL_IMAGE_NAME_1"
+    - trivy image --exit-code 0 --cache-dir .trivycache/ --no-progress --format template --template "@/contrib/gitlab.tpl" --output "$CI_PROJECT_DIR/gl-container-scanning-report.json" "$FULL_IMAGE_NAME_2"
+    - trivy image --exit-code 1 --cache-dir .trivycache/ --severity CRITICAL --no-progress "$FULL_IMAGE_NAME_2"
   cache:
     paths:
       - .trivycache/
