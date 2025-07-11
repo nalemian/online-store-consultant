@@ -1,6 +1,6 @@
 # Online store consultant RADAT
 
-<img src="./images/logo.jpg" alt="" width="20" />
+<img src="./images/logo.jpg" alt="" width="250" />
 
 
 ## Description
