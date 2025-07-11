@@ -1,8 +1,5 @@
 # Online store consultant RADAT
 
-![Logo](\online-store-consultant\logo.jpg)
-
-
 ## Description
 Our project provides the best solution to the pain point of online consultations in the shops. Our team offers the chat-bot that acts as a professional, answers in a simple user-friendly language without complex terms, remembers the shop stock, recall the dialogue history, and even communicates in a way that is indistinguishable from a human.
 
