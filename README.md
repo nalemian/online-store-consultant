@@ -18,6 +18,12 @@ Initially, the consultants that worked locally at a specific shop had to answer 
 * Service analytics (processing speed, quality of service).
 ```
 
+### Up-to-date deployed version
+[Link](https://gitlab.pg.innopolis.university/r.muliukin/online-store-consultant)
+
+### Demo 
+[Video]()
+
 ## Usage
 To use our product you should:
 ```
@@ -27,11 +33,6 @@ To use our product you should:
 Please Note:
 * You can view list of all commands avalaible via Telegram widget "Menu"
 ```
-### Up-to-date deployed version
-[Link](https://gitlab.pg.innopolis.university/r.muliukin/online-store-consultant)
-
-### Demo 
-[Video]()
 
 ## Architecture
 
