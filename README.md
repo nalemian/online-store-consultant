@@ -1,6 +1,6 @@
 # Online store consultant RADAT
 
-![Logo](https://drive.google.com/file/d/16sKIm4kI7ROJPWT1Jc7agxRCxeo9thGz/view?usp=sharing)
+![Logo](\online-store-consultant\logo.jpg)
 
 
 ## Description
