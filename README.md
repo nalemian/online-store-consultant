@@ -162,4 +162,4 @@ Here you can find the the architecture of our service: [Architecture](https://gi
 Here you can find the stages of the development of our project: [Changelog]()
 
 ## License
-Here you can see license: [License]()
+Here you can see license: [License](https://gitlab.pg.innopolis.university/r.muliukin/online-store-consultant/-/blob/main/LICENSE)
