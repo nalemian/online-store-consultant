@@ -90,7 +90,7 @@ POST /api/start → returns `session_id` cookie
 
 ```
 POST /api/message  
-{ "message":"I need a phone under 300", "productID":"" }
+{ "message":"I need a phone with 128 GB of memory", "productID":"1" }
 ```
 
 #### End session:
@@ -103,7 +103,7 @@ POST /api/end
 
 ```
 POST /api/register  
-{ "login":"alice", "password":"secret" }
+{ "login":"name", "password":"test" }
 ```
 Migrates any prior anonymous history into a new user session.
 
@@ -111,7 +111,7 @@ Migrates any prior anonymous history into a new user session.
 
 ```
 POST /api/login  
-{ "login":"alice", "password":"secret" }
+{ "login":"name", "password":"test" }
 ```
 Attaches you to your prior chat context.
 
