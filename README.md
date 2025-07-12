@@ -22,10 +22,10 @@ Initially, the consultants that worked locally at a specific shop had to answer 
 ```
 
 ### Up-to-date deployed version
-[Link](https://gitlab.pg.innopolis.university/r.muliukin/online-store-consultant)
+Here you can see deployed version of project: [Link](https://gitlab.pg.innopolis.university/r.muliukin/online-store-consultant)
 
 ### Demo 
-[Video]()
+Here you can see demo video:[Video]()
 
 ## Project Goals and Description
 
@@ -143,7 +143,7 @@ Please Note:
 
 ## Development
 
-[Contributing](./CONTRIBUTING.md)
+Here you can see development of our project: [Contributing](./CONTRIBUTING.md)
 
 ## Quality characteristics and attribute scenarios
 
@@ -151,7 +151,7 @@ Please Note:
 
 ## Build and deployment automation
 
-[CI](./docs/automation/continuous-integration.md)
+Here you can find deployment automation: [CI](./docs/automation/continuous-integration.md)
 
 ## Architecture
 
@@ -159,7 +159,7 @@ Here you can find the the architecture of our service: [Architecture](https://gi
 
 ## Changelog
 
-Here you can the stages of the development of our project: [Changelog]()
+Here you can find the stages of the development of our project: [Changelog]()
 
 ## License
 Here you can see license: [License]()
