@@ -151,7 +151,7 @@ Here you can see development of our project: [Contributing](./CONTRIBUTING.md)
 
 ## Build and deployment automation
 
-Here you can find deployment automation: [CI](./docs/automation/continuous-integration.md)
+Here you can find continuous integration: [CI](./docs/automation/continuous-integration.md)
 
 ## Architecture
 
