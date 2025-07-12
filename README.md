@@ -3,8 +3,8 @@
 <img src="./images/logo.jpg" alt="" width="250" />
 
 
-## Description
-Our project provides the best solution to the pain point of online consultations in the shops - the chat-bot that acts as a professional.
+### Description
+Our project provides the best solution to the pain point of online consultations in the shops - the chat-bot that acts as a consulting professional.
 
 
 ### Background
