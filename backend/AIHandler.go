@@ -263,3 +263,8 @@ func SaveDialogueContext(sessionIDStr string, db *sql.DB) {
 	}
 	log.Printf("Context for session %s has been saved successfully", sessionID)
 }
+
+func computeSimilarQueries(messages []string) int {
+	//TODO: create a query to DeepSeek with all session messages for similarity analysis
+	return 1
+}
