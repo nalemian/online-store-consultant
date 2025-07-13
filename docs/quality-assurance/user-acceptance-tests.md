@@ -42,6 +42,7 @@ answers to all supported queries.
 
 **Actual Result**:
 The Telegram bot provided correct answers to all questions it was asked.
+
 ## Test 3: Explanation of complex product's characteristics in simple words.
 
 (based on the acceptance criteria from https://gitlab.pg.innopolis.university/r.muliukin/online-store-consultant/-/issues/8)
@@ -59,6 +60,7 @@ information about the characteristics of a product.
 The system delivers an answer that is easy to understand, 
 avoiding unnecessary technical jargon. If the use of specific terms is necessary, 
 the system provides brief and clear explanations for them.
+
 **Actual Result**:
 The response was straightforward and accessible, 
 with no excessive technical language. When specialized terms were used, 
@@ -80,6 +82,7 @@ about a product.
 The system generates natural, conversational responses that do not 
 rely on repetitive or overly enthusiastic AI-style phrases (such as always
 beginning with "Great choice!" or "Wonderful question!").
+
 **Actual Result**:
 The system’s replies sounded natural and conversational,
 without defaulting to formulaic or overly enthusiastic 
@@ -106,3 +109,23 @@ in the designated database table.
 After registration and initiating a conversation 
 in the Telegram bot, all messages exchanged during 
 the session were correctly saved to the database table.
+
+## Test 6: Communicating with bot without choosing a product
+(based on the acceptance criteria from https://gitlab.pg.innopolis.university/r.muliukin/online-store-consultant/-/issues/24) 
+
+**Acceptance Criteria**:
+- GIVEN our telegram bot
+- WHEN user sends a message without choosing a product
+- THEN the consultant doesn't answer and ask about product
+
+**Test Conduction**:  
+Start a chat with the Telegram bot as a user. 
+Send a message (e.g., a question or greeting) without first selecting or specifying a product from the available options.
+
+**Expected Result**:  
+The consultant does not provide an answer to the user's message. 
+Instead, the bot prompts the user to choose a product before proceeding with any further interaction.
+
+**Actual Result**:  
+Upon receiving a message without a product selection, the consultant refrained from answering the user's query. 
+The bot responded by asking the user to select a product, ensuring that the conversation could not continue until a product was chosen.
