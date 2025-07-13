@@ -29,3 +29,10 @@
 ### Please ask the consultant some question that is not related to the website and its products (e.g., "What is the weather today?").
 
 (based on the acceptance criteria from GitLab: https://gitlab.pg.innopolis.university/r.muliukin/online-store-consultant/-/issues/3)
+
+## 6 acceptance test: Communicating with bot without choosing a product
+
+### Please ask the consultant some questions before choosing the product.
+
+(based on the acceptance criteria from GitLab: https://gitlab.pg.innopolis.university/r.muliukin/online-store-consultant/-/issues/24) 
+
