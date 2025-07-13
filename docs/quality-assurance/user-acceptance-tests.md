@@ -118,14 +118,11 @@ the session were correctly saved to the database table.
 - WHEN user sends a message without choosing a product
 - THEN the consultant doesn't answer and ask about product
 
-**Test Conduction**:  
-Start a chat with the Telegram bot as a user. 
+**Test Conduction**: Start a chat with the Telegram bot as a user. 
 Send a message (e.g., a question or greeting) without first selecting or specifying a product from the available options.
 
-**Expected Result**:  
-The consultant does not provide an answer to the user's message. 
+**Expected Result**: The consultant does not provide an answer to the user's message. 
 Instead, the bot prompts the user to choose a product before proceeding with any further interaction.
 
-**Actual Result**:  
-Upon receiving a message without a product selection, the consultant refrained from answering the user's query. 
+**Actual Result**: Upon receiving a message without a product selection, the consultant refrained from answering the user's query. 
 The bot responded by asking the user to select a product, ensuring that the conversation could not continue until a product was chosen.
