@@ -145,9 +145,16 @@ Please Note:
 
 Here you can see development of our project: [Contributing](./CONTRIBUTING.md)
 
-## Quality characteristics and attribute scenarios
-
 ## Quality assurance
+### Quality attribute scenarios
+See detailed report on quality attribute scenarios [here](docs/quality-attributes/quality-attribute-scenarios.md)
+
+### Automated tests
+The tools and practices were used for automated
+quality assurance can be found [here](docs/quality-assurance/automated-tests.md)
+### User acceptance tests
+The detailed information about user acceptance tests were conducted
+can be found [here](docs/quality-assurance/user-acceptance-tests.md)
 
 ## Build and deployment automation
 
