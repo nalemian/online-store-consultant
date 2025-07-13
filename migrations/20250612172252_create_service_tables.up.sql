@@ -2,6 +2,8 @@ DROP TABLE IF EXISTS user_sessions;
 DROP TABLE IF EXISTS popular_products;
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS anonymous_sessions;
+DROP TABLE IF EXISTS request_metrics;
+DROP TABLE IF EXISTS repeated_queries;
 
 CREATE TABLE user_sessions
 (
@@ -36,4 +38,20 @@ CREATE TABLE users
     credentials TEXT,
     session_id  UUID,
     FOREIGN KEY (session_id) REFERENCES user_sessions (session_id) ON DELETE CASCADE
+);
+
+CREATE TABLE request_metrics
+(
+    id           SERIAL PRIMARY KEY,
+    session_id   UUID NULL,
+    request_type TEXT,
+    success      BOOLEAN NOT NULL,
+    duration     INT     NOT NULL
+);
+
+CREATE TABLE repeated_queries
+(
+    session_id    UUID PRIMARY KEY,
+    similar_pairs INT NOT NULL,
+    queries_count INT NOT NULL
 );

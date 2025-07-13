@@ -9,7 +9,7 @@ import (
 )
 
 func startSessionChecker() {
-	ticker := time.NewTicker(3 * time.Minute)
+	ticker := time.NewTicker(1 * time.Minute)
 	defer ticker.Stop()
 
 	for {
@@ -39,10 +39,9 @@ func checkInactiveSessions() {
 			}
 			if time.Since(lastActive) > 15*time.Minute {
 				sessionIDStr := sessionID.String()
-				log.Printf("Anonymous session %s has been inactive for 15 minutes, deleting it", sessionIDStr)
-				if _, err := db.Exec(`DELETE FROM anonymous_sessions WHERE session_id = $1`, sessionID); err != nil {
-					log.Printf("Error deleting anonymous session %s: %v", sessionIDStr, err)
-				}
+				log.Printf("Anonymous session %s has been inactive for 15 minutes, "+
+					"deleting it and storing similar requests", sessionIDStr)
+				endAnonymousSession(sessionIDStr)
 			}
 		}
 	}
@@ -66,9 +65,9 @@ func checkInactiveSessions() {
 		}
 		// If last active time is older than 15 minutes and context is empty, save context
 		if time.Since(lastActive) > 15*time.Minute && !wasContextUpdated {
-			sessionIDStr := sessionID.String()
-			log.Printf("User session %s has been inactive for 15 minutes, saving context", sessionID)
-			SaveDialogueContext(sessionIDStr, db)
+			log.Printf("User session %s has been inactive for 15 minutes, "+
+				"saving context and storing similar requests", sessionID)
+			endUserSession(sessionID.String())
 		}
 	}
 }
@@ -234,4 +233,58 @@ func deleteAnonymousSession(sessionID string) error {
 		return fmt.Errorf("delete anonymous session %s: %w", sessionID, err)
 	}
 	return nil
+}
+
+func insertSimilarQueriesNumber(sessionID string, registered bool) error {
+	pairs, err := returnSessionMessages(sessionID, registered)
+	similarQueriesNumber := computeSimilarQueries(pairs)
+	if err != nil {
+		log.Printf("The error encountered with returning session messages: %v", err)
+	}
+	table := "anonymous_messages_" + sessionID
+	if registered {
+		table = "user_messages_" + sessionID
+	}
+	query := fmt.Sprintf(`SELECT COUNT(*) FROM "%s"`, table)
+	var count int
+	if err := db.QueryRow(query).Scan(&count); err != nil {
+		return fmt.Errorf("failed to count rows in %s: %w", table, err)
+	}
+	_, err = db.Exec(
+		`INSERT INTO repeated_queries(session_id, similar_pairs, queries_count) VALUES($1,$2,$3)`,
+		sessionID, similarQueriesNumber, count,
+	)
+	return err
+}
+
+func endAnonymousSession(sessionID string) {
+	err := insertSimilarQueriesNumber(sessionID, false)
+	if err != nil {
+		log.Printf("Error inserting repeated queries for anonymous session %s: %v", sessionID, err)
+	} else {
+		log.Printf("Inserting repeated queries succeeded for anonymous session %s", sessionID)
+	}
+	if _, err := db.Exec(`DELETE FROM anonymous_sessions WHERE session_id = $1`, sessionID); err != nil {
+		log.Printf("Error deleting anonymous session %s: %v", sessionID, err)
+	}
+}
+
+func endUserSession(sessionID string) {
+	err := insertSimilarQueriesNumber(sessionID, true)
+	if err != nil {
+		log.Printf("Error inserting repeated queries for user session %s: %v", sessionID, err)
+	} else {
+		log.Printf("Inserting repeated queries succeeded for user session %s", sessionID)
+	}
+	SaveDialogueContext(sessionID, db)
+}
+
+func recordMetric(sessionID, requestType string, success bool, duration int) {
+	_, err := db.Exec(`
+        INSERT INTO request_metrics (session_id, request_type, success, duration)
+        VALUES ($1, $2, $3, $4)
+    `, sessionID, requestType, success, duration)
+	if err != nil {
+		log.Printf("Failed to record metric %s: %v", requestType, err)
+	}
 }

@@ -31,33 +31,52 @@ type Session struct {
 
 // Function that initializes the session with the consultant and attach the unique identifier to it
 func startHandler(w http.ResponseWriter, r *http.Request) {
+	start := time.Now()
+	success := true
+	sessionID := ""
+	defer func() {
+		duration := int(time.Since(start).Milliseconds())
+		recordMetric(sessionID, "start", success, duration)
+	}()
+
 	// We should check that client only send data
 	if r.Method != http.MethodPost {
 		http.Error(w, "Only POST allowed", http.StatusMethodNotAllowed)
+		success = false
 		return
 	}
 
 	session := getInitialSession(w, r)
-
-	log.Println("New unauthorized session: " + session.ID)
+	sessionID = session.ID
+	log.Println("New unauthorized session: " + sessionID)
 	log.Print("Caching the user messages")
 	updateLastActive(session.ID, session.isRegistered)
 }
 
 // Function to handle the user register action
 func registerHandler(w http.ResponseWriter, r *http.Request) {
+	start := time.Now()
+	success := true
+	anonSession := getInitialSession(w, r)
+	oldAnonID := anonSession.ID
+	sessionID := oldAnonID
+	defer func() {
+		duration := int(time.Since(start).Milliseconds())
+		recordMetric(sessionID, "register", success, duration)
+	}()
 	log.Println("Calling /api/register")
 	if r.Method != http.MethodPost {
 		http.Error(w, "Only POST allowed", http.StatusMethodNotAllowed)
+		success = false
+		return
 	}
-	anonSession := getInitialSession(w, r)
-	oldAnonID := anonSession.ID
 	var clientMsg struct {
 		Login    string `json:"login"`
 		Password string `json:"password"`
 	}
 	if err := json.NewDecoder(r.Body).Decode(&clientMsg); err != nil {
 		http.Error(w, "Invalid request", http.StatusBadRequest)
+		success = false
 		return
 	}
 	key := fmt.Sprintf("%s_%s", strings.TrimSpace(clientMsg.Login), strings.TrimSpace(clientMsg.Password))
@@ -71,24 +90,29 @@ func registerHandler(w http.ResponseWriter, r *http.Request) {
 		resp["response"] = ErrExistingUser.Error()
 		json.NewEncoder(w).Encode(resp)
 		log.Printf("Session for %s already registered", key)
+		success = false
 		return
 	}
 	var userID string
 	err = db.QueryRow(`SELECT user_id FROM users WHERE credentials = $1`, key).Scan(&userID)
 	if err == nil {
 		http.Error(w, "User already exists", http.StatusConflict)
+		success = false
 		return
 	}
 	_, err = registerUser(key)
 	if err != nil {
 		http.Error(w, "Internal error", http.StatusInternalServerError)
+		success = false
 		return
 	}
 	session, err := createAuthorizedSession(w, key)
 	if err != nil {
 		http.Error(w, "Internal error", http.StatusInternalServerError)
+		success = false
 		return
 	}
+	sessionID = session.ID
 	if _, err := db.Exec(`
         UPDATE users
         SET session_id = $2
@@ -115,8 +139,18 @@ func registerHandler(w http.ResponseWriter, r *http.Request) {
 
 // Function to handle signing in
 func loginHandler(w http.ResponseWriter, r *http.Request) {
+	start := time.Now()
+	success := true
+	anonSession := getInitialSession(w, r)
+	oldAnonID := anonSession.ID
+	sessionIDForAnalysis := oldAnonID
+	defer func() {
+		duration := int(time.Since(start).Milliseconds())
+		recordMetric(sessionIDForAnalysis, "login", success, duration)
+	}()
 	log.Println("Calling /api/login")
 	if r.Method != http.MethodPost {
+		success = false
 		http.Error(w, "Only POST allowed", http.StatusMethodNotAllowed)
 	}
 	var clientMsg struct {
@@ -124,6 +158,7 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 		Password string `json:"password"`
 	}
 	if err := json.NewDecoder(r.Body).Decode(&clientMsg); err != nil {
+		success = false
 		http.Error(w, "Invalid request", http.StatusBadRequest)
 		return
 	}
@@ -134,9 +169,11 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		resp["response"] = err.Error()
 		json.NewEncoder(w).Encode(resp)
+		success = false
 		log.Printf("Error encountered while signing in the user %s: %v", key, "user is not registered")
 		return
 	}
+	sessionIDForAnalysis = sessionID
 	http.SetCookie(w, &http.Cookie{
 		Name:     "session_id",
 		Value:    sessionID,
@@ -151,8 +188,6 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 		HttpOnly: true,
 		Secure:   false,
 	})
-	anonSession := getInitialSession(w, r)
-	oldAnonID := anonSession.ID
 	if err := deleteAnonymousSession(oldAnonID); err != nil {
 		log.Println("Warning:", err)
 	}
@@ -164,15 +199,27 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 
 // Function that handles the end of the session
 func endHandler(w http.ResponseWriter, r *http.Request) {
+	start := time.Now()
+	success := true
+	defer func() {
+		duration := int(time.Since(start).Milliseconds())
+		sessionIDForAnalysis := ""
+		if c, err := r.Cookie("session_id"); err == nil {
+			sessionIDForAnalysis = c.Value
+		}
+		recordMetric(sessionIDForAnalysis, "end", success, duration)
+	}()
 
 	if r.Method != http.MethodPost {
 		http.Error(w, "Only POST allowed", http.StatusMethodNotAllowed)
+		success = false
 		return
 	}
 	resp := make(map[string]string)
 	cookie, err := r.Cookie("session_id")
 	if err != nil {
 		log.Printf("Error getting session cookie: %v", err)
+		success = false
 		return
 	}
 	if cookie.Value == "" {
@@ -185,25 +232,11 @@ func endHandler(w http.ResponseWriter, r *http.Request) {
 			isReg = true
 		}
 		if !isReg {
-			log.Printf("Ending anonymous session %s, deleting it", sessionID)
-			_, err := db.Exec(`
-			DELETE FROM anonymous_sessions
-        	WHERE session_id = $1
-		`, sessionID)
-			if err != nil {
-				log.Printf("Error deleting anonymous session %s: %v", sessionID, err)
-			}
+			log.Printf("Ending anonymous session %s and storing similar requests", sessionID)
+			endAnonymousSession(sessionID)
 		} else {
-			log.Printf("Ending registered session %s, saving context", sessionID)
-			SaveDialogueContext(sessionID, db)
-			_, err := db.Exec(`
-			UPDATE user_sessions
-			SET last_active = NOW() - INTERVAL '15 minutes'
-			WHERE session_id = $1
-		`, sessionID)
-			if err != nil {
-				log.Printf("Error expiring user session %s: %v", sessionID, err)
-			}
+			log.Printf("Ending registered session %s and storing similar requests", sessionID)
+			endUserSession(sessionID)
 		}
 		resp["response"] = "Спасибо, что воспользовались нашим консультантом." +
 			" Пожалуйста, оцените сессию "
@@ -211,16 +244,28 @@ func endHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	err = json.NewEncoder(w).Encode(resp)
 	if err != nil {
+		success = false
 		log.Fatalf("Error encounter while responsing from api/end: %v", err)
 	}
-
 }
 
 // Function to handle the main flow of the user dialogue
 func messageHandler(w http.ResponseWriter, r *http.Request) {
+	start := time.Now()
+	success := true
+	defer func() {
+		duration := int(time.Since(start).Milliseconds())
+		sessionID := ""
+		if c, err := r.Cookie("session_id"); err == nil {
+			sessionID = c.Value
+		}
+		recordMetric(sessionID, "message", success, duration)
+	}()
+
 	// We should check that client only send data
 	if r.Method != http.MethodPost {
 		http.Error(w, "Only POST allowed", http.StatusMethodNotAllowed)
+		success = false
 		return
 	}
 
@@ -232,6 +277,7 @@ func messageHandler(w http.ResponseWriter, r *http.Request) {
 
 	if err := json.NewDecoder(r.Body).Decode(&clientMsg); err != nil {
 		http.Error(w, "Invalid request", http.StatusBadRequest)
+		success = false
 		return
 	}
 
@@ -246,6 +292,7 @@ func messageHandler(w http.ResponseWriter, r *http.Request) {
 			resp["response"] = aiResponse
 		} else {
 			resp["response"] = "Консультант не может помочь с этим вопросом, пожалуйста, обратитесь к технической поддержке через /help"
+			success = false
 			log.Println(ok)
 		}
 	}
@@ -256,8 +303,20 @@ func messageHandler(w http.ResponseWriter, r *http.Request) {
 
 // Function to handle the GET requests about product data
 func productsHandler(w http.ResponseWriter, r *http.Request) {
+	start := time.Now()
+	success := true
+	defer func() {
+		duration := int(time.Since(start).Milliseconds())
+		sessionID := ""
+		if c, err := r.Cookie("session_id"); err == nil {
+			sessionID = c.Value
+		}
+		recordMetric(sessionID, "products", success, duration)
+	}()
+
 	if r.Method != http.MethodGet {
 		http.Error(w, "Only GET allowed", http.StatusMethodNotAllowed)
+		success = false
 		return
 	}
 
@@ -268,6 +327,7 @@ func productsHandler(w http.ResponseWriter, r *http.Request) {
 	file, err := os.Open(filename)
 	if err != nil {
 		log.Println("Product not found:", err)
+		success = false
 		http.Error(w, "Product not found", http.StatusNotFound)
 		return
 	}
@@ -280,6 +340,7 @@ func productsHandler(w http.ResponseWriter, r *http.Request) {
 	err = decoder.Decode(&product)
 	if err != nil {
 		log.Printf("Error while decoding the file: %v", err)
+		success = false
 		http.Error(w, "Failed to decode product data", http.StatusInternalServerError)
 		return
 	}
