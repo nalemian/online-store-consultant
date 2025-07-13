@@ -9,28 +9,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Added user acceptance tests
-- Add the Architecture description to the "docs/architecture"
-- Add context diagram
-- Add body info to README.cmd
-- Add contributing files
-- MIT License
 - Unit tests
-
-
 
 ### Changed
 
-- Quality attributes section
-- Introduced the required assignment structure
-- Updated README.md
 - Prohibited answering without productID
-- Up-to-date branching
-
+- Improved documentation
 ### Fixed
 
+- Pipeline now disables migrations while testing to avoid errors
 - Edited the context diagram
-
 
 ## [MVP2] - 2025-07-06
 
@@ -39,30 +27,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add query to save popular products data
 - Added keywords logging
 - Added telegram bot in docker compose
-- Support & installation
-- Add docs/architecture directory
-- Added architecture components (sequence and component diagrams)
-- Added deployment diagram
-- Added information about Git workflow in README
-- Added information about CI/CD in README
 - Differ registered and not registered users
 - Introduced keywords extraction logic, made a refactoring
 - Saving messages per session, deleting them, saving the context, requesting popular products
 - Introduced additional bot functionality
 - Introduced client estimate
 - Docker compose finished
-- Pull_request template introduced
 - Introduced end session logic, avoid keywords saving in empty dialogues
 - Introduced different behaviour for authorized and not, localization, refactoring
 - Introduced api/end to allow user end session manually
 - The logic of separating authorized and unauthorized users using a database
-- General&kanban description, secret management, usage
 - Feature for getting all info about current product
 - Handle user product choice
 - Saving session messages during the service operation
 - Unit tests
 - Integration tests
-
+- Documentation
 
 ### Changed
 
@@ -70,7 +50,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Get rid of map dialogue storing, using DB for fetching and storing instead
 - Refactored, added removal of trailing session while register/log out
 - Ensured the IDE treat  newly created files as dockerFiles
-- Edited feature_request.md
 - Refactoring logic, product info support
 
 
