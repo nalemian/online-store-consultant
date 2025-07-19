@@ -141,6 +141,23 @@ Please Note:
 4) Having installed Docker on your computer, run docker compose up --build in the IDE Terminal and enjoy the service running.
 ```
 
+## Project Scalability
+
+### Introduce new products to the product base
+```
+1) Add the json file with the product info into the data folder of the project following naming convention product{product serial num}.json
+2) Make sure the json key-value pairs follow the same structure as the json provided initially in the project
+3) In the bot/telegram/commands.go file add new buttons for the keyboard in the function sendHello() and sendGoods() with the corresponding callback data in the format: p{product serial num}
+4) In the bot/telegram/telegram.go file add new cases for those callbacks in the processCallback() function
+```
+
+### Change the AI model for handling requests
+```
+1) In the backend/AIHandler.go change the httpReq url from https://api.deepseek.com/v1/chat/completions to the desired AI API url in the  GetResponse() function
+2) Adjust the structures AIRequest and Response for making the queries and receive responses respectively (depending on your AI API documentation)
+```
+
+
 ## Development
 
 Here you can see development of our project: [Contributing](./CONTRIBUTING.md)
