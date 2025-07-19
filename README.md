@@ -25,7 +25,7 @@ Initially, the consultants that worked locally at a specific shop had to answer 
 Here you can see deployed version of project: [Link](https://gitlab.pg.innopolis.university/r.muliukin/online-store-consultant)
 
 ### Demo 
-Here you can see demo video: [Video](https://drive.google.com/file/d/1Zv7_yYe1wYazcy7z5WNIhDXbg4etBlTD/view?usp=sharing)
+Here you can see demo video: [Video](https://disk.yandex.ru/i/Vr8Pa9IkK1ZHIQ)
 
 ## Project Goals and Description
 
