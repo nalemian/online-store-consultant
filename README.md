@@ -4,12 +4,12 @@
 
 
 ### Description
-Our project provides the best solution to the pain point of online consultations in the shops - the chat-bot that acts as a consulting professional.
+Our project provides the best solution to the pain point of online consultations in the shops - the chatbot that acts as a consulting professional.
 
 
 ### Background
 
-Initially, the consultants that worked locally at a specific shop had to answer to both online and offline clients. As a result, the waiting time increased dramitically while the response quality decreased accordingly.
+Initially, the consultants that worked locally at a specific shop had to answer to both online and offline clients. As a result, the waiting time increased dramatically while the response quality decreased accordingly.
 
 ### Features
 ```
@@ -24,7 +24,7 @@ Initially, the consultants that worked locally at a specific shop had to answer 
 ### Up-to-date deployed version
 Here you can see deployed version of project: [Link](https://gitlab.pg.innopolis.university/r.muliukin/online-store-consultant)
 
-### Demo 
+### Demo
 Here you can see demo video: [Video](https://disk.yandex.ru/i/Vr8Pa9IkK1ZHIQ)
 
 ## Project Goals and Description
@@ -181,11 +181,11 @@ Here you can find continuous integration: [CI](./docs/automation/continuous-inte
 
 ## Architecture
 
-Here you can find the the architecture of our service: [Architecture](https://gitlab.pg.innopolis.university/r.muliukin/online-store-consultant/-/blob/main/docs/architecture/architecture.md?ref_type=heads)
+Here you can find the architecture of our service: [Architecture](https://gitlab.pg.innopolis.university/r.muliukin/online-store-consultant/-/blob/main/docs/architecture/architecture.md?ref_type=heads)
 
 ## Changelog
 
-Here you can find the stages of the development of our project: [Changelog]()
+Here you can find the stages of the development of our project: [Changelog](CHANGELOG.md)
 
 ## License
 Here you can see license: [License](https://gitlab.pg.innopolis.university/r.muliukin/online-store-consultant/-/blob/main/LICENSE)
