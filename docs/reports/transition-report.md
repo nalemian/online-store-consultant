@@ -1,8 +1,11 @@
-1. - Is the product complete? Which parts are done and which aren’t done?
+##
+- Is the product complete? Which parts are done and which aren’t done?
 - I think it’s complete.
-2. - Is the customer using the product? How often? In what way? If not, why not?
+##
+- Is the customer using the product? How often? In what way? If not, why not?
 - No, this product is not for me.
-3. - Has the customer deployed the product on their side?
+##
+- Has the customer deployed the product on their side?
 - No.
 4. - What measures need to be taken to fully transition the product?
 - Within this, it’s just a proof of concept, a minimal MVP to push it somewhere.
