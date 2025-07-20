@@ -23,12 +23,12 @@ so why not?
 - Again, by improving it. So, the answer to all these questions is kind of the same.
 ##
 - Is everything clear? What can be improved?
-- The README is clear now, it’s enough. Just need to add this one point and
+- The README is clear now, it’s enough. Just need to add one point and
 that’s it, README is finished.
 - Are they able to launch/deploy using your instructions?
 - Yes
 - What two other sections the customer would like to be included in the ReadMe?
 - A description of where to add the JSONs – they’re lying locally somewhere in
-a folder now. And which methods are responsible for a certain AI, so you can swap
+a folder now and which methods are responsible for a certain AI, so you can swap
 them, where is the method kept that you could swap out to work with another model.
 Otherwise, everything’s fine.
