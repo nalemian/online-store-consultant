@@ -1,5 +1,3 @@
-Here I commited as "nalemian" and "Adeliya Nagimova" as initially we worked on GitLab and I was on my university account: https://gitlab.pg.innopolis.university/r.muliukin/online-store-consultant
-
 # Online store consultant RADAT
 
 <img src="./images/logo.jpg" alt="" width="250" />
